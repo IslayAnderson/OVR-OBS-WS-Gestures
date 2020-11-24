@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>OVR Window Widget</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./style.css">
+  <style>
+
+  </style>
+  <body class="transbg">
+    <div class="status">
+      <p>Connection:<span class="stat" id="con"></span> CPU: <span id="cpu" class="stat"></span> FPS: <span id="fps"></span> Skipped frames: <span id="skippedF"></span></p>
+    </div>
+    <div class="modle navybg">
+      <a href="#" onclick="saveState();" id="ss">Save State</a>
+      <div id="panelSet">
+
+      </div>
+      <a class="grey tr fr" href="https://liamanderson.co.uk">Built by Liam Anderson</a>
+    </div>
+  </body>
+</html>
+
+<panel id="connect">
+  <h1>Connect</h1>
+  <input id="address" placeholder="Address"><button id="address_button">Connect</button>
+
+  <h1>Scene List</h1>
+  <div id="scene_list"></div>
+</panel>
+<panel id="start">
+  <h1 class="tc grey">Load Configuration</h1>
+  <input type="file" class="tc auto config grey" onchange="readConfig(this)"></input>
+  <a class="btn grey" href="#" onclick="loadConfig(this);">Read config</a>
+  <line style="--width:80%;"></line>
+  <h1 class="tc grey">Build new Configuration</h1>
+  <a class="btn grey tc auto" onclick="panels(activate)" style="--d:block; --w:50px;" href="#connect">Go</a>
+</panel>
+<panel id="activate">
+  <h1 class="tc grey">Select Gesture to enable Hotkeys</h1>
+  <div class="gesture">
+    <palm></palm>
+    <finger class="f1 o"></finger>
+    <finger class="f2 o"></finger>
+    <finger class="f3 o"></finger>
+    <finger class="f4 o"></finger>
+    <finger class="f5 o"></finger>
+    <label for="fc1" class="fc fc1">
+      <input type="checkbox" name="fc1" id="fc1" class="fc" onchange="finger(this);">
+      <span class="fc fc1"></span>
+    </label>
+    <label for="fc2" class="fc fc2">
+      <input type="checkbox" name="fc2" id="fc2" class="fc"  onchange="finger(this)">
+      <span class="fc fc2"></span>
+    </label>
+    <label for="fc3" class="fc fc3">
+      <input type="checkbox" name="fc3" id="fc3" class="fc"  onchange="finger(this)">
+      <span class="fc fc3"></span>
+    </label>
+    <label for="fc4" class="fc fc4">
+      <input type="checkbox" name="fc4" id="fc4" class="fc"  onchange="finger(this)">
+      <span class="fc fc4"></span>
+    </label>
+    <label for="fc5" class="fc fc5">
+      <input type="checkbox" name="fc5" id="fc5" class="fc"  onchange="finger(this)">
+      <span class="fc fc5"></span>
+    </label>
+  </div>
+  <select class="tc" style="--d:block; --w:69%;  --mt: 16px; --mb: 16px;">
+    <option>1s</option>
+    <option>2s</option>
+    <option>3s</option>
+  </select>
+  <a href="#activate" class="tc btn" onclick="activateHotkey();" style="--w:15%;">Next</a>
+</panel>
+
+<config></config>
+<script src="./functions.js"></script>
