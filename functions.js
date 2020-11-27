@@ -8,6 +8,7 @@ var reader = new FileReader();
 var panelSet = document.getElementById('panelSet');
 var start = document.getElementById('start');
 var activate = document.getElementById('activate');
+var scenesP = document.getElementById('scenes');
 
 const downloadToFile = (content, filename, contentType) => {
   const a = document.createElement('a');
@@ -101,29 +102,69 @@ function saveState(){
 function streamStatus(){
 	xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      status = this.responseText;
-    }
+			let text = this.responseText;
+			//console.log("text: " + text);
+			let status = JSON.parse(text);
+
+
+			document.querySelector("#fps").innerHTML = status.stats.fps.toFixed(2);
+
+			document.querySelector("#skippedF").innerHTML = status.stats.rendermissedframes;
+
+			if(status.status == "ok"){
+				document.querySelector("#con").style.background = "green";
+			} else{
+				document.querySelector("#con").style.background = "red";
+			}
+
+			if(status.stats.cpuusage < 3){
+				document.querySelector("#cpu").style.background = "green";
+				document.querySelector("#cpu").innerHTML = status.stats.cpuusage.toFixed(1);
+			} else if(status.stats.cpuusage > 3 && status.stats.cpuusage < 30 ) {
+				document.querySelector("#cpu").style.background = "orange";
+				document.querySelector("#cpu").innerHTML = status.stats.cpuusage.toFixed(1);
+			} else{
+				document.querySelector("#cpu").style.background = "red";
+				document.querySelector("#cpu").innerHTML = status.stats.cpuusage.toFixed(1);
+			}
+
+    } else if (xhttp.readyState == 4 && xhttp.status == 0) {
+				document.querySelector("#con").style.background = "red";
+				document.querySelector("#cpu").style.background = "red";
+				document.querySelector("#cpu").innerHTML = "";
+				document.querySelector("#fps").innerHTML = "OFFLINE";
+				document.querySelector("#skippedF").innerHTML = "OFFLINE";
+			}
   };
   xhttp.open("POST", "http://127.0.0.1:"+port+"/call/GetStats", true);
   xhttp.send();
-
-	document.querySelector("#fps").innerHTML = status.stats.fps;
-
-	document.querySelector("#skippedF").innerHTML = status.stats.render-missed-frames;
-
-	if(status.status == "ok"){
-		document.querySelector("#con").background = "green";
-	} else{
-		document.querySelector("#con").background = "red";
-	}
-
-	if(status.stats.cpu-usage < 0.5){
-		document.querySelector("#cpu").background = "green";
-	} else if(status.stats.cpu-usage > 0.5 && status.stats.cpu-usage < 0.8 ) {
-		document.querySelector("#cpu").background = "orange";
-	} else{
-		document.querySelector("#cpu").background = "red";
-	}
 }
 
 setInterval(streamStatus, 1000);
+
+function getSenes(){
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			let scenesJ = JSON.parse(this.responseText);
+			let senesA = scenesJ.scenes;
+			let sceneListE = document.querySelector("#sceneList");
+			i=0;
+			while(i <= senesA.length){
+				let sourceNames = [];
+				a=0;
+				while(a <= senesA[i].sources.length){
+					sourceNames.push(senesA[i].sources[a].name);
+					 a++
+				}
+				sceneListE.innerHTML = sceneListE.innerHTML + '<p class="tc">'+senesA[i].name+': <span class="sd">'+ sourceNames +'<span></p>'
+				i++
+			}
+
+		} else if (xhttp.readyState == 4 && xhttp.status == 0) {
+				document.querySelector("#sceneList").innerHTML = "OFFLINE";
+			}
+	};
+	xhttp.open("POST", "http://127.0.0.1:"+port+"/call/GetSceneList", true);
+	xhttp.send();
+}

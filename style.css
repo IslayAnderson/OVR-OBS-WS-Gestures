@@ -385,11 +385,12 @@ table { border-collapse: collapse; border-spacing: 0; }
   margin: 0 auto;
 }
 .stat{
-  width: 13px;
-  height: 13px;
+  min-width: 13px;
+  min-height: 13px;
   background: pink;
   display: inline-block;
   vertical-align: middle;
+  color: #fff;
   padding: 3px;
   margin: 3px;
 }

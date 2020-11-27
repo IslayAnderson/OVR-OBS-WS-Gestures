@@ -25,17 +25,10 @@ ws = simpleobsws.obsws(host=wsAddress, port=wsPort, password=wsPassword, loop=lo
 def statusmessage(message):
     print(str(message) + '...      ', end='', flush=True)
 
-@asyncio.coroutine
-def handler(request):
-    return web.Response(
-        headers={
-            "Access-Control-Allow-Origin": "*",
-        })
-
 async def handle_emit_request(request):
     """Handler function for all emit-based HTTP requests. Assumes that you know what you are doing because it will never return an error."""
     if ('AuthKey' not in request.headers) and httpAuthKey != None:
-        return web.json_response({'status':'error', 'error':'AuthKey header is required.'})
+        return web.Response( headers={ "Access-Control-Allow-Origin": "*", }, text="{'status':'error', 'error':'AuthKey header is required.'}")
     if httpAuthKey == None or (request.headers['AuthKey'] == httpAuthKey):
         requesttype = request.match_info['type']
         try:
@@ -43,14 +36,14 @@ async def handle_emit_request(request):
         except json.decoder.JSONDecodeError:
             requestdata = None
         await ws.emit(requesttype, requestdata)
-        return web.json_response({'status':'ok'})
+        return web.Response( headers={ "Access-Control-Allow-Origin": "*", }, text="{'status':'ok'}")
     else:
-        return web.json_response({'status':'error', 'error':'Bad AuthKey'})
+        return web.Response( headers={ "Access-Control-Allow-Origin": "*", }, text="{'status':'error', 'error':'Bad AuthKey'}")
 
 async def handle_call_request(request):
     """Handler function for all call-based HTTP requests."""
     if ('AuthKey' not in request.headers) and httpAuthKey != None:
-        return web.json_response({'status':'error', 'error':'AuthKey header is required.'})
+        return web.Response( headers={ "Access-Control-Allow-Origin": "*", }, text="{'status':'error', 'error':'AuthKey header is required.'}")
     if httpAuthKey == None or (request.headers['AuthKey'] == httpAuthKey):
         requesttype = request.match_info['type']
         try:
@@ -62,9 +55,9 @@ async def handle_call_request(request):
             responsedata = await ws.call(requesttype, requestdata)
         except simpleobsws.MessageTimeout:
             responsedata = {'status':'error', 'error':'The obs-websocket request timed out.'}
-        return web.json_response(responsedata)
+        return web.Response( headers={ "Access-Control-Allow-Origin": "*", }, text=str(responsedata).replace("'", '"').replace("-", "").replace("False", '"FALSE"').replace("True", '"TRUE"'))
     else:
-        return web.json_response({'status':'error', 'error':'Bad AuthKey'})
+        return web.Response( headers={ "Access-Control-Allow-Origin": "*", }, text="{'status':'error', 'error':'Bad AuthKey'}")
 
 app = web.Application()
 app.add_routes([web.post('/emit/{type}', handle_emit_request), web.post('/call/{type}', handle_call_request)])

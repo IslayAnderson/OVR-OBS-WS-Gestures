@@ -71,8 +71,13 @@
     <option>2s</option>
     <option>3s</option>
   </select>
-  <a href="#activate" class="tc btn" onclick="activateHotkey();" style="--w:15%;">Next</a>
+  <a href="#activate" class="tc btn" onclick="activateHotkey();panels(scenesP);getSenes()" style="--w:15%;">Next</a>
 </panel>
-
+<panel id="scenes">
+  <h1 class="tc grey">Configure Scenes</h1>
+  <div id="sceneList" class="scenes">
+    <p class="tc">Current scene: <span id="currentSceneName"><span></p>
+  </div>
+</panel>
 <config></config>
 <script src="./functions.js"></script>
