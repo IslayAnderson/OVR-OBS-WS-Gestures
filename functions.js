@@ -148,21 +148,22 @@ function getSenes(){
 			console.log(this.responseText);
 			let scenesJ = JSON.parse(this.responseText);
 			let senesA = scenesJ.scenes;
-			let sceneListE = document.querySelector("#sceneList");
+			let sceneListE = document.querySelector("#scenez");
 			i=0;
-			while(i <= senesA.length){
+			sceneListE.innerHTML = sceneListE.innerHTML + '<tr><td>Current Scene</td><td>'+scenesJ.currentscene+'</td></tr>';
+			while(i < senesA.length){
 				let sourceNames = [];
 				a=0;
-				while(a <= senesA[i].sources.length){
+				while(a < senesA[i].sources.length){
 					sourceNames.push(senesA[i].sources[a].name);
-					 a++
+					a++
 				}
-				sceneListE.innerHTML = sceneListE.innerHTML + '<p class="tc">'+senesA[i].name+': <span class="sd">'+ sourceNames +'<span></p>'
+				sceneListE.innerHTML = sceneListE.innerHTML + '<tr><td>'+senesA[i].name+'</td><td>'+ sourceNames +'</td></tr>';
 				i++
 			}
 
 		} else if (xhttp.readyState == 4 && xhttp.status == 0) {
-				document.querySelector("#sceneList").innerHTML = "OFFLINE";
+				sceneListE.innerHTML = "OFFLINE";
 			}
 	};
 	xhttp.open("POST", "http://127.0.0.1:"+port+"/call/GetSceneList", true);
