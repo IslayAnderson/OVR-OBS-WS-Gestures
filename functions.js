@@ -43,7 +43,9 @@ function OverlaySpawned(uid) {
 
 function panels(e){
 	panelSet.innerHTML = "";
+	panelSet.style.opacity = "0";
 	panelSet.innerHTML = e.innerHTML;
+	panelSet.style.opacity = "1";
 }
 
 function readConfig(e){
@@ -148,18 +150,50 @@ function getSenes(){
 			console.log(this.responseText);
 			let scenesJ = JSON.parse(this.responseText);
 			let senesA = scenesJ.scenes;
-			let sceneListE = document.querySelector("#scenez");
-			i=0;
-			sceneListE.innerHTML = sceneListE.innerHTML + '<tr><td>Current Scene</td><td>'+scenesJ.currentscene+'</td></tr>';
-			while(i < senesA.length){
-				let sourceNames = [];
-				a=0;
-				while(a < senesA[i].sources.length){
-					sourceNames.push(senesA[i].sources[a].name);
-					a++
+			let sceneListE = document.querySelector("#sceneBox");
+			let sourceListE = document.querySelector("#sourceBox");
+			for(i=0; i < senesA.length; i++){
+				if(i == 0){
+					selected = 'selected';
+				} else {
+					selected = '';
 				}
-				sceneListE.innerHTML = sceneListE.innerHTML + '<tr><td>'+senesA[i].name+'</td><td>'+ sourceNames +'</td></tr>';
-				i++
+				if(senesA[i].name == scenesJ.currentscene){
+					sceneListE.innerHTML = sceneListE.innerHTML + '<a href="#" class="'+selected+'"onclick="showSources(this, \'S-'+senesA[i].name+'\')">'+senesA[i].name+' (current)<p class="check"><input type="checkbox" name="'+senesA[i].name+'" id="'+senesA[i].name+'"></p></a>';
+					sourceListE.innerHTML = sourceListE.innerHTML + '<div id="S-'+senesA[i].name+'" class="sCL '+selected+'" ></div>'
+				} else{
+					sceneListE.innerHTML = sceneListE.innerHTML + '<a href="#" class="'+selected+'" onclick="showSources(this, \'S-'+senesA[i].name+'\')">'+senesA[i].name+'<p class="check"><input type="checkbox" name="'+senesA[i].name+'" id="'+senesA[i].name+'"></p></a>';
+					sourceListE.innerHTML = sourceListE.innerHTML + '<div id="S-'+senesA[i].name+'" class="sCL '+selected+'" ></div>'
+				}
+				sources = document.getElementById('S-'+senesA[i].name);
+				for(a=0; a < senesA[i].sources.length; a++){
+					if(senesA[i].sources[a].render == 'TRUE'){
+						visible = 'visible';
+					} else {
+						visible = '';
+					}
+					if(senesA[i].sources[a].locked == 'TRUE'){
+						locked = 'locked';
+					} else {
+						locked = 'unlocked';
+					}
+					sources.innerHTML = sources.innerHTML + '<p><span class="icon '+senesA[i].sources[a].type+'"></span>'+senesA[i].sources[a].name+'<span class="icon '+locked+'"></span><span class="icon '+visible+'"></span></p>';
+					if(senesA[i].sources[a].type == "group"){
+						for(b=0; b < senesA[i].sources[a].groupChildren.length; b++){
+							if(senesA[i].sources[a].groupChildren[b].render == 'TRUE'){
+								visible = 'visible';
+							} else {
+								visible = '';
+							}
+							if(senesA[i].sources[a].groupChildren[b].locked == 'TRUE'){
+								locked = 'locked';
+							} else {
+								locked = 'unlocked';
+							}
+							sources.innerHTML = sources.innerHTML + '<p class="indent"><span class="icon '+senesA[i].sources[a].groupChildren[b].type+'"></span>'+senesA[i].sources[a].groupChildren[b].name+'<span class="icon '+locked+'"></span><span class="icon '+visible+'"></span></p>';
+						}
+					}
+				}
 			}
 
 		} else if (xhttp.readyState == 4 && xhttp.status == 0) {
@@ -168,4 +202,12 @@ function getSenes(){
 	};
 	xhttp.open("POST", "http://127.0.0.1:"+port+"/call/GetSceneList", true);
 	xhttp.send();
+}
+function showSources(a, b){
+	console.log(a + b);
+	document.querySelector("#sceneBox > a.selected").classList.remove('selected');
+	a.classList.add('selected');
+
+	document.querySelector(".sCL.selected").classList.remove('selected');
+	document.querySelector("#"+b).classList.add('selected');
 }

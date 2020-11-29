@@ -202,6 +202,15 @@ table { border-collapse: collapse; border-spacing: 0; }
   .fr{
     float: right;
   }
+  .c-50 {
+    display: block;
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+    height: auto;
+    padding: 5px;
+    margin: 5px;
+  }
   input {
     border: unset;
     width: 100%;
@@ -232,7 +241,13 @@ table { border-collapse: collapse; border-spacing: 0; }
   panel{
     all:unset;
     display:none;
+    visibility: hidden;
     width:100%;
+  }
+  #panelSet{
+    opacity:0;
+    transition: opacity 1s;
+    display: flow-root;
   }
   .modle{
     width: 500px;
@@ -393,4 +408,134 @@ table { border-collapse: collapse; border-spacing: 0; }
   color: #fff;
   padding: 3px;
   margin: 3px;
+}
+
+/* Scenes */
+.scenes{
+  display:flex;
+}
+.Sbox {
+  padding: 0;
+  background: #3a3a3a;
+}
+.sCL{
+  display:none;
+}
+.sCL.selected{
+  display:block;
+}
+a.selected {
+    background: #8a8a8a;
+}
+.Sbox a {
+    padding: 3px;
+}
+.Sbox a {
+    color: #fff;
+    display: block;
+    text-decoration: unset;
+}
+.Sbox p.check {
+    width: 13px;
+    padding: 2px;
+    float: right;
+}
+.Sbox p {
+    padding: 3px;
+    color: #fff;
+    margin: unset;
+}
+.indent{
+  margin-left:30px !important;
+}
+.icon {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    padding-right: 3px;
+    padding-left: 3px;
+    background-size: 100% 100%;
+}
+.Sbox .icon:nth-child(2) {
+    float: right;
+}
+.Sbox .icon:nth-child(3) {
+    float: right;
+}
+.icon.visible {
+    background-image: url(./svg/visible.svg);
+
+}
+.icon.unlocked {
+    background-image: url(./svg/un-locked.svg);
+
+}
+
+.icon.dshow_input {
+    background-image: url(./svg/sources/camera.svg);
+
+}
+.icon.monitor_capture {
+    background-image: url(./svg/settings/video.svg);
+
+}
+.icon.color_source_v3 {
+    background-image: url(./svg/sources/brush.svg);
+
+}
+.icon.default {
+    background-image: url(./svg/sources/default.svg);
+
+}
+.icon.game_capture {
+    background-image: url(./svg/sources/gamepad.svg);
+
+}
+.icon.group {
+    background-image: url(./svg/sources/group.svg);
+
+}
+.icon.image_source {
+    background-image: url(./svg/sources/image.svg);
+
+}
+.icon.media {
+    background-image: url(./svg/sources/media.svg);
+
+}
+.icon.wasapi_input_capture {
+    background-image: url(./svg/sources/microphone.svg);
+
+}
+.icon.scene {
+    background-image: url(./svg/sources/scene.svg);
+
+}
+.icon.slideshow {
+    background-image: url(./svg/sources/slideshow.svg);
+
+}
+.icon.window_capture {
+    background-image: url(./svg/sources/window.svg);
+
+}
+.icon.vlc_source {
+    background-image: url(./svg/sources/media.svg);
+
+}
+.icon.text_gdiplus_v2 {
+    background-image: url(./svg/sources/text.svg);
+
+}
+.icon.ffmpeg_source {
+    background-image: url(./svg/sources/media.svg);
+
+}
+.icon.browser_source {
+    background-image: url(./svg/sources/globe.svg);
+
+}
+.icon.wasapi_output_capture {
+    background-image: url(./svg/settings/audio.svg);
+
 }

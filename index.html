@@ -74,14 +74,18 @@
   <a href="#activate" class="tc btn" onclick="activateHotkey();panels(scenesP);getSenes()" style="--w:15%;">Next</a>
 </panel>
 <panel id="scenes">
-  <h1 class="tc grey">Configure Scenes</h1>
-  <div id="sceneList" class="scenes">
-    <table class="tl grey">
-      <tbody id="scenez">
-
-      </tbody>
-    </table>
-  </div>
+		<h1 class="tc grey">Configure Scenes</h1>
+    <p class="grey tc">Use the scene selection and Check boxes to use which scenes you'd like to setup Gestures for</p>
+		<div id="sceneList" class="scenes" style="display: flex;">
+			<div class="c-50 Sbox" id="sceneBox">
+				<h3 class="white tc">Scenes</h3>
+			</div>
+			<div class="c-50 Sbox" id="sourceBox">
+				<h3 class="white tc">Sources</h3>
+			</div>
+		</div>
+		<a href="#activate" class="tc btn grey fr auto" onclick="activateHotkey();panels(scenesP);getSenes()" style="--w:15%; --mt:5px; --mb:5px">Next</a>
+	</div>
 </panel>
 <config></config>
 <script src="./functions.js"></script>
